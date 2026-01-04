@@ -7,19 +7,6 @@ A modern, responsive portfolio website built with React and Vite, showcasing my 
 ![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?style=for-the-badge&logo=vite)
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-4.0-38BDF8?style=for-the-badge&logo=tailwindcss)
 
-## ✨ Features
-
-- 🎨 **Modern UI/UX** - Clean, gradient-based design with smooth animations
-- 📱 **Fully Responsive** - Optimized for all devices (mobile, tablet, desktop)
-- 🌓 **Dark Mode** - Automatic dark/light theme support
-- 📧 **Contact Form** - Integrated with EmailJS for instant notifications
-- ✅ **Auto-Reply** - Automatic acknowledgment emails to visitors
-- 🔄 **PWA Support** - Installable as a standalone app
-- ⚡ **Fast Performance** - Built with Vite for lightning-fast load times
-- 🎯 **SEO Optimized** - Meta tags and semantic HTML
-- 📊 **Project Showcase** - Interactive portfolio gallery
-- 💼 **Resume Download** - Downloadable PDF resume
-
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -34,7 +21,6 @@ A modern, responsive portfolio website built with React and Vite, showcasing my 
 - **EmailJS** - Email service for contact form
 - **PWA** - Progressive Web App capabilities
 - **Service Workers** - Offline support and caching
-- **ESLint** - Code linting
 
 ## 📦 Installation
 
@@ -67,8 +53,6 @@ VITE_EMAILJS_TEMPLATE_ID=your_template_id
 VITE_EMAILJS_AUTO_REPLY_TEMPLATE_ID=your_auto_reply_template_id
 VITE_EMAILJS_PUBLIC_KEY=your_public_key
 ```
-
-> 📝 See [EMAIL_SETUP_GUIDE.md](EMAIL_SETUP_GUIDE.md) for detailed EmailJS setup instructions
 
 ### Run Development Server
 
@@ -107,7 +91,6 @@ The contact form uses **EmailJS** to send emails. You'll need to:
 - `EMAIL_TEMPLATE.html` - Template for notifications to you
 - `AUTO_REPLY_TEMPLATE.html` - Template for auto-replies to visitors
 
-For step-by-step setup, see [EMAIL_SETUP_GUIDE.md](EMAIL_SETUP_GUIDE.md)
 
 ## 📱 PWA Features
 
