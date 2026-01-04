@@ -47,34 +47,41 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
 
   // Skip non-GET requests
-  if (request.method !== "GET") {
-    return;
-  }
+  if (request.method !== "GET") return;
 
   // Skip cross-origin requests
-  if (url.origin !== location.origin) {
-    return;
-  }
+  if (url.origin !== location.origin) return;
 
   // Skip API calls (EmailJS, etc.)
-  if (url.pathname.includes("/api/") || url.hostname.includes("emailjs")) {
+  if (url.pathname.includes("/api/") || url.hostname.includes("emailjs"))
+    return;
+
+  // For navigation requests (HTML page loads) use network-first so new builds are served
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          // If valid, update runtime cache and return network response
+          if (networkResponse && networkResponse.status === 200) {
+            const responseClone = networkResponse.clone();
+            caches.open(RUNTIME_CACHE).then((cache) => {
+              cache.put(request, responseClone);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match("/index.html"))
+    );
     return;
   }
 
+  // For other resources use cache-first, falling back to network
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
-      // Return cached response if found
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+      if (cachedResponse) return cachedResponse;
 
-      // Clone the request
-      const fetchRequest = request.clone();
-
-      // Fetch from network
-      return fetch(fetchRequest)
+      return fetch(request)
         .then((response) => {
-          // Check if valid response
           if (
             !response ||
             response.status !== 200 ||
@@ -82,22 +89,14 @@ self.addEventListener("fetch", (event) => {
           ) {
             return response;
           }
-
-          // Clone the response
           const responseToCache = response.clone();
-
-          // Cache runtime assets
-          caches.open(RUNTIME_CACHE).then((cache) => {
-            cache.put(request, responseToCache);
-          });
-
+          caches
+            .open(RUNTIME_CACHE)
+            .then((cache) => cache.put(request, responseToCache));
           return response;
         })
         .catch(() => {
-          // Offline fallback - return index.html for navigation requests
-          if (request.mode === "navigate") {
-            return caches.match("/index.html");
-          }
+          // Optionally return a fallback asset (image placeholder) here
         });
     })
   );
